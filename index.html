@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<title>Tu Marca – Camisetas</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700&family=Rubik+Dirt&display=swap">
+<style>
+:root{--bg:#f1efe9;--fg:#141210;--mut:#6b6a64;--card:#e4dfd2;--red:#d3202b;--tan:#c9bda4;--ln:#141210;
+--d:"Rubik Dirt",Impact,"Arial Black",sans-serif;--b:"Barlow Condensed","Arial Narrow",sans-serif;
+color-scheme:light dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141210;--fg:#f1efe9;--mut:#9a978c;--card:#221f1b;--ln:#f1efe9}}
+:root[data-theme="dark"]{--bg:#141210;--fg:#f1efe9;--mut:#9a978c;--card:#221f1b;--ln:#f1efe9}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:500 1.15rem/1.35 var(--b);-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;touch-action:manipulation}
+:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:11;display:flex;justify-content:space-between;align-items:center;padding:.7rem 1.2rem;background:var(--bg);border-bottom:2px solid var(--ln)}
+.logo{font:1.6rem var(--d)}
+.cartbtn{background:var(--fg);color:var(--bg);border:0;padding:.6rem 1rem;font-weight:700;font-size:1.05rem}
+.cartbtn b{background:var(--red);color:#fff;padding:0 .45rem;margin-left:.4rem}
+.hero{padding:clamp(2rem,7vw,5rem) 1.2rem 1.5rem;max-width:1200px;margin:auto}
+.hero h1{font:clamp(3.4rem,15vw,10.5rem)/.85 var(--d);margin:0;letter-spacing:-.01em}
+.hero p{max-width:30ch;font-size:1.35rem;margin:1.2rem 0 0;color:var(--mut)}
+.band{background:var(--red);color:#fff;font-weight:700;font-size:1.2rem;padding:.55rem 1.2rem;text-align:center}
+.filters{display:flex;gap:.5rem;flex-wrap:wrap;max-width:1200px;margin:1.6rem auto 0;padding:0 1.2rem}
+.f{background:none;border:2px solid var(--ln);padding:.5rem .9rem;font-weight:700}
+.f[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:1.4rem;max-width:1200px;margin:1.2rem auto 3rem;padding:0 1.2rem}
+.card{border:2px solid var(--ln);display:flex;flex-direction:column}
+.art{background:var(--card);padding:1rem;border-bottom:2px solid var(--ln)}
+.art svg{display:block;width:100%;height:auto}.art img{display:block;width:100%;aspect-ratio:1;object-fit:cover}.grid .empty{grid-column:1/-1}.s:disabled{opacity:.35;cursor:not-allowed;text-decoration:line-through}.add:disabled{background:var(--mut);cursor:not-allowed}
+.info{padding:.8rem;display:flex;flex-direction:column;gap:.6rem}
+.name{font-size:1.5rem;font-weight:700;line-height:1}
+.price{color:var(--red);font-weight:700;font-size:1.3rem}
+.sz{display:flex;gap:.4rem}
+.s{flex:1;background:none;border:2px solid var(--ln);padding:.5rem 0;font-weight:700}
+.s.on{background:var(--fg);color:var(--bg)}
+.add{background:var(--red);color:#fff;border:0;padding:.6rem;font-weight:700;font-size:1.15rem}
+footer{border-top:2px solid var(--ln);padding:1.2rem;text-align:center;color:var(--mut)}
+.ov{position:fixed;inset:0;background:#000a;opacity:0;pointer-events:none;transition:opacity .2s;z-index:20}
+.ov.on{opacity:1;pointer-events:auto}
+aside{position:fixed;top:0;right:0;bottom:0;width:min(430px,100%);overflow-y:auto;background:var(--bg);border-left:2px solid var(--ln);z-index:21;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+aside.on{transform:none}
+.ah{display:flex;justify-content:space-between;align-items:center;padding:.8rem 1.1rem;border-bottom:2px solid var(--ln);font:1.5rem var(--d)}
+.x{background:none;border:0;font-size:1.8rem;line-height:1;padding:.5rem .7rem}
+.items{flex:1;min-height:7rem;overflow:auto;overscroll-behavior:contain;padding:.5rem 1.1rem}
+.it{display:grid;grid-template-columns:1fr auto;gap:.2rem .8rem;padding:.7rem 0;border-bottom:1px solid var(--mut)}
+.it b{font-size:1.2rem}
+.q{display:flex;align-items:center;gap:.5rem}
+.q button{width:2.75rem;height:2.75rem;background:none;border:2px solid var(--ln);font-weight:700}
+.empty{color:var(--mut);padding:2rem 0;text-align:center}
+.ft{padding:1rem 1.1rem;border-top:2px solid var(--ln);display:flex;flex-direction:column;gap:.5rem}
+.ft input,.ft textarea{width:100%;background:var(--card);border:2px solid var(--ln);padding:.5rem .6rem}
+.tot{display:flex;justify-content:space-between;font-size:1.5rem;font-weight:700}
+#err{color:var(--red);min-height:1.2em;margin:0}
+#send{display:block;text-align:center;text-decoration:none;background:#1f9d55;color:#fff;font-weight:700;font-size:1.25rem;padding:.7rem}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header><span class="logo" id="logo">Tu Marca</span><button class="cartbtn" id="open" aria-label="Abrir carrito">Carrito<b id="cnt">0</b></button></header>
+<section class="hero"><h1>Ropa con ruido</h1><p>Camisetas gráficas para los que no pasan desapercibidos.</p></section>
+<div class="band">Arma tu carrito y envía el pedido directo por WhatsApp</div>
+<div class="filters" id="filters"></div>
+<main class="grid" id="grid"></main>
+<footer>© Tu Marca. Pedidos por WhatsApp.</footer>
+<div class="ov" id="ov"></div>
+<aside id="cart" aria-hidden="true" aria-label="Tu pedido">
+<div class="ah">Tu pedido<button class="x" id="close" aria-label="Cerrar carrito">×</button></div>
+<div class="items" id="items"></div>
+<div class="ft">
+<div class="tot"><span>Total</span><span id="tot">$0</span></div>
+<input id="nm" placeholder="Tu nombre" autocomplete="name">
+<input id="ad" placeholder="Ciudad y dirección de entrega" autocomplete="street-address">
+<textarea id="nt" rows="2" placeholder="Notas (opcional)"></textarea>
+<p id="err" role="alert"></p>
+<a id="send" target="_blank" rel="noopener" href="#">Enviar pedido por WhatsApp</a>
+</div>
+</aside>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import {getFirestore,collection,getDocs} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+const fs=getFirestore(initializeApp({apiKey:"AIzaSyBhWPdHDS0TdIWbGg5fD8MJc-MZsePEbL4",authDomain:"drees-store.firebaseapp.com",projectId:"drees-store",storageBucket:"drees-store.firebasestorage.app",messagingSenderId:"290448731709",appId:"1:290448731709:web:7a432ed19899e4297f4454"}));
+const STORE="Tu Marca", WA="573000000000";
+let P=[];
+const SZ=["S","M","L","XL"];let CATS=["Todo"];
+const fmt=n=>new Intl.NumberFormat("es-CO",{style:"currency",currency:"COP",maximumFractionDigits:0}).format(n);
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const hex=(v,d)=>/^#[0-9a-f]{6}$/i.test(v)?v:d;
+const stock=(p,s)=>Math.max(0,+(p.stock||{})[s]||0);
+const avail=p=>SZ.filter(s=>stock(p,s)>0);
+let cart=[],filter="Todo",note="Cargando catálogo…";
+try{cart=JSON.parse(localStorage.getItem("cart")||"[]")}catch(e){}
+const save=()=>{try{localStorage.setItem("cart",JSON.stringify(cart))}catch(e){}};
+document.title=STORE+" – Camisetas";$("logo").textContent=STORE;
+const tee=p=>`<svg viewBox="0 0 200 200" role="img" aria-label="Camiseta ${esc(p.n)}"><path d="M60 20L85 10Q100 26 115 10L140 20L185 55L165 80L145 68V185H55V68L35 80L15 55Z" fill="${p.bg}" stroke="#0007" stroke-width="1.5"/><ellipse cx="100" cy="115" rx="40" ry="28" transform="rotate(-18 100 115)" fill="#c9bda4" opacity=".7"/><path d="M60 132Q100 74 142 104L134 117Q100 92 70 142Z" fill="${p.acc}"/><g font-family="Rubik Dirt,Impact,sans-serif" fill="${p.ink}" text-anchor="middle"><text x="100" y="68" font-size="20" textLength="76" lengthAdjust="spacingAndGlyphs">${esc(p.a)}</text><text x="100" y="168" font-size="17" textLength="70" lengthAdjust="spacingAndGlyphs">${esc(p.b)}</text></g></svg>`;
+const pic=p=>p.img?`<img src="${p.img}" alt="${esc(p.n)}" loading="lazy">`:tee(p);
+function grid(){
+ const list=P.filter(p=>filter=="Todo"||p.c==filter);
+ $("grid").innerHTML=list.map(p=>{const av=avail(p),sel=av.includes("M")?"M":av[0];return `<article class="card" data-id="${esc(p.id)}"><div class="art">${pic(p)}</div><div class="info"><div class="name">${esc(p.n)}</div><div class="price">${fmt(p.p)}</div>${av.length?`<div class="sz">${SZ.map(s=>`<button class="s${s==sel?" on":""}" data-s="${s}" aria-pressed="${s==sel}"${stock(p,s)?"":" disabled"}>${s}</button>`).join("")}</div><button class="add">Agregar al carrito</button>`:`<button class="add" disabled>Agotado</button>`}</div></article>`}).join("")||`<p class="empty">${note}</p>`;
+}
+function filters(){
+ $("filters").innerHTML=CATS.map(c=>`<button class="f" data-c="${esc(c)}" aria-pressed="${c==filter}">${esc(c)}</button>`).join("");
+}
+const total=()=>cart.reduce((t,i)=>t+P.find(p=>p.id==i.id).p*i.q,0);
+function msg(){
+ const l=cart.map(i=>{const p=P.find(x=>x.id==i.id);return `• ${i.q} x ${p.n} (talla ${i.s}): ${fmt(p.p*i.q)}`}).join("\n");
+ return `Hola ${STORE}, quiero hacer este pedido:\n\n${l}\n\nTotal: ${fmt(total())}\n\nNombre: ${$("nm").value.trim()}\nCiudad y dirección: ${$("ad").value.trim()}\nNotas: ${$("nt").value.trim()||"-"}`;
+}
+function link(){$("send").href=cart.length?`https://wa.me/${WA}?text=${encodeURIComponent(msg())}`:"#"}
+function render(){
+ $("cnt").textContent=cart.reduce((t,i)=>t+i.q,0);
+ $("tot").textContent=fmt(total());
+ $("items").innerHTML=cart.length?cart.map((i,k)=>{const p=P.find(x=>x.id==i.id);return `<div class="it"><b>${esc(p.n)}</b><span>${fmt(p.p*i.q)}</span><span>Talla ${i.s}</span><div class="q"><button data-k="${k}" data-d="-1" aria-label="Quitar uno">−</button>${i.q}<button data-k="${k}" data-d="1" aria-label="Agregar uno">+</button></div></div>`}).join(""):`<p class="empty">Tu carrito está vacío. Agrega una camiseta del catálogo.</p>`;
+ link();save();
+}
+function toggle(on){document.documentElement.style.overflow=on?"hidden":"";$("cart").classList.toggle("on",on);$("ov").classList.toggle("on",on);$("cart").setAttribute("aria-hidden",!on)}
+$("grid").addEventListener("click",e=>{
+ const card=e.target.closest(".card");if(!card)return;
+ if(e.target.classList.contains("s")){card.querySelectorAll(".s").forEach(b=>{b.classList.remove("on");b.setAttribute("aria-pressed","false")});e.target.classList.add("on");e.target.setAttribute("aria-pressed","true")}
+ if(e.target.classList.contains("add")){
+  const id=card.dataset.id,s=card.querySelector(".s.on").dataset.s,f=cart.find(i=>i.id==id&&i.s==s),p=P.find(x=>x.id==id),b=e.target;
+  if((f?f.q:0)>=stock(p,s)){b.textContent="No hay más unidades";setTimeout(()=>b.textContent="Agregar al carrito",1200);return}
+  f?f.q++:cart.push({id,s,q:1});render();
+  b.textContent="Agregada";setTimeout(()=>b.textContent="Agregar al carrito",1000);
+ }
+});
+$("filters").addEventListener("click",e=>{const c=e.target.dataset.c;if(c){filter=c;filters();grid()}});
+$("items").addEventListener("click",e=>{
+ const k=e.target.dataset.k;if(k==null)return;
+ const it=cart[k],d=+e.target.dataset.d;if(d>0&&it.q>=stock(P.find(x=>x.id==it.id),it.s))return;
+ it.q+=d;if(it.q<1)cart.splice(k,1);render();
+});
+$("open").onclick=()=>toggle(true);$("close").onclick=$("ov").onclick=()=>toggle(false);
+["nm","ad","nt"].forEach(id=>$(id).addEventListener("input",link));
+$("send").addEventListener("click",e=>{
+ let m="";
+ if(!cart.length)m="Agrega al menos una prenda al carrito.";
+ else if(!$("nm").value.trim())m="Escribe tu nombre.";
+ else if(!$("ad").value.trim())m="Escribe la ciudad y dirección de entrega.";
+ $("err").textContent=m;if(m)e.preventDefault();
+});
+const clean=x=>({id:String(x.id),n:String(x.n||""),c:String(x.c||""),p:Math.max(0,+x.p||0),bg:hex(x.bg,"#f4f2ec"),ink:hex(x.ink,"#141210"),acc:hex(x.acc,"#d3202b"),a:String(x.a||""),b:String(x.b||""),img:/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+\/=]+$/.test(x.img||"")?x.img:"",stock:x.stock||{}});
+(async()=>{
+ filters();grid();
+ try{
+  const snap=await getDocs(collection(fs,"products"));
+  P=snap.docs.map(d=>({...d.data(),id:d.id})).filter(x=>x.on!==false).map(clean).sort((a,b)=>a.id.localeCompare(b.id,undefined,{numeric:true}));
+  note="Pronto habrá prendas nuevas.";
+  CATS=["Todo",...new Set(P.map(p=>p.c).filter(Boolean))];
+  cart=cart.map(i=>({...i,q:Math.min(i.q,stock(P.find(p=>p.id==i.id)||{},i.s))})).filter(i=>i.q>0);
+ }catch(e){note="No pudimos cargar el catálogo. Revisa tu conexión y recarga la página.";cart=[]}
+ filters();grid();render();
+})();
+</script>
+</body>
+</html>
