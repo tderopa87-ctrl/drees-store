@@ -78,7 +78,7 @@ dialog h2{font:1.6rem var(--d);margin:0 0 .8rem}
 <label class="w">Nombre<input id="f_n" required></label>
 <label>Categoría<input id="f_c" list="cats" placeholder="Blancas, Negras…"></label>
 <label>Precio (COP)<input id="f_p" type="number" min="0" step="any" required></label>
-<label class="w">Unidades por talla</label>
+<p class="w" style="margin:0;font-weight:700">Unidades por talla</p>
 <label>S<input id="f_S" type="number" min="0" value="0"></label><label>M<input id="f_M" type="number" min="0" value="0"></label>
 <label>L<input id="f_L" type="number" min="0" value="0"></label><label>XL<input id="f_XL" type="number" min="0" value="0"></label>
 <label>Texto línea 1<input id="f_a" placeholder="BORN TO"></label><label>Texto línea 2<input id="f_b" placeholder="DRIFT"></label>
@@ -189,7 +189,7 @@ $("rmimg").onclick=()=>{curImg="";$("f_img").value="";$("fm").textContent="";pv(
 $("frm").addEventListener("submit",async e=>{
  e.preventDefault();const p=readForm();
  if(!p.a&&!p.b){const w=p.n.toUpperCase().split(" ");p.a=w.shift();p.b=w.join(" ")}
- try{await DB.save(JSON.parse(JSON.stringify(p)))}catch(err){$("fm").textContent="No se pudo guardar. Revisa tu conexión e intenta de nuevo.";return}
+ try{await DB.save(JSON.parse(JSON.stringify(p)))}catch(err){console.error(err);$("fm").textContent="No se pudo guardar ("+(err.code||err.message||"error desconocido")+").";return}
  const i=items.findIndex(x=>x.id==p.id);i<0?items.push(p):items[i]=p;
  $("dlg").close();render();
 });
@@ -213,9 +213,9 @@ async function load(){
  $("grid").innerHTML='<p class="empty">Cargando catálogo…</p>';
  items=JSON.parse(JSON.stringify(await DB.list()));render();
 }
-const showErr=()=>{$("banner").hidden=false;$("banner").textContent="No se pudo completar la acción. Revisa tu conexión e intenta de nuevo. (Toca aquí para cerrar)"};
+const showErr=e=>{if(e)console.error(e);$("banner").hidden=false;$("banner").textContent="No se pudo completar la acción"+(e&&e.code?" ("+e.code+")":"")+". Revisa tu conexión e intenta de nuevo. (Toca aquí para cerrar)"};
 $("banner").onclick=()=>{$("banner").hidden=true};
-window.addEventListener("unhandledrejection",()=>{showErr();if(auth.currentUser)load().catch(()=>{})});
+window.addEventListener("unhandledrejection",e=>{showErr(e.reason);if(auth.currentUser)load().catch(()=>{})});
 const ERR={"auth/invalid-credential":"Correo o contraseña incorrectos.","auth/invalid-email":"Escribe un correo válido.","auth/too-many-requests":"Demasiados intentos. Espera un momento e intenta de nuevo."};
 $("lf").addEventListener("submit",async e=>{
  e.preventDefault();$("le").textContent="";
