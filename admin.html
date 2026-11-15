@@ -189,7 +189,7 @@ $("rmimg").onclick=()=>{curImg="";$("f_img").value="";$("fm").textContent="";pv(
 $("frm").addEventListener("submit",async e=>{
  e.preventDefault();const p=readForm();
  if(!p.a&&!p.b){const w=p.n.toUpperCase().split(" ");p.a=w.shift();p.b=w.join(" ")}
- try{await DB.save(JSON.parse(JSON.stringify(p)))}catch(err){console.error(err);$("fm").textContent="No se pudo guardar ("+(err.code||err.message||"error desconocido")+").";return}
+ try{await DB.save(JSON.parse(JSON.stringify(p)))}catch(err){console.error(err);$("fm").textContent="No se pudo guardar ("+(err.code||err.message||"error desconocido")+"). Sesión: "+(auth.currentUser?auth.currentUser.email:"ninguna")+".";return}
  const i=items.findIndex(x=>x.id==p.id);i<0?items.push(p):items[i]=p;
  $("dlg").close();render();
 });
